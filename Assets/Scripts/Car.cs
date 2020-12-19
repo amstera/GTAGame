@@ -41,11 +41,11 @@ public class Car : MonoBehaviour
 
                 if (Input.GetKey(KeyCode.A))
                 {
-                    transform.RotateAround(transform.position, transform.up, Time.deltaTime * -150f);
+                    transform.RotateAround(transform.position, transform.up, Time.deltaTime * -125f);
                 }
                 else if (Input.GetKey(KeyCode.D))
                 {
-                    transform.RotateAround(transform.position, transform.up, Time.deltaTime * 150f);
+                    transform.RotateAround(transform.position, transform.up, Time.deltaTime * 125f);
                 }
             }
             else
@@ -83,7 +83,7 @@ public class Car : MonoBehaviour
         {
             _player.SetActive(true);
             _crosshair.SetActive(true);
-            _player.transform.position = transform.position - (transform.right * 1.5f);
+            _player.transform.position = transform.position - (transform.right * 1.5f) + (Vector3.up * 0.5f);
             _player = null;
             Occupied = CarOccupied.None;
             transform.Find("Camera").gameObject.SetActive(false);
