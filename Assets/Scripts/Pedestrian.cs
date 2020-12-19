@@ -39,10 +39,13 @@ public class Pedestrian : MonoBehaviour
         }
     }
 
-    public void Die(Vector3 bulletDirection, Vector3 bloodOrigin)
+    public void Die(Vector3 bulletDirection, Vector3? bloodOrigin)
     {
-        GameObject bloodParticle = Instantiate(Blood, bloodOrigin, Quaternion.identity);
-        Destroy(bloodParticle, 5);
+        if (bloodOrigin != null)
+        {
+            GameObject bloodParticle = Instantiate(Blood, bloodOrigin.Value, Quaternion.identity);
+            Destroy(bloodParticle, 5);
+        }
 
         if (_isDead)
         {

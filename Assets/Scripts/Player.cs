@@ -23,4 +23,16 @@ public class Player : MonoBehaviour
             transform.position += transform.right * Speed * Time.deltaTime;
         }
     }
+
+    private void OnCollisionStay(Collision collision)
+    {
+        Car car = collision.collider.GetComponent<Car>();
+        if (car != null)
+        {
+            if (Input.GetKeyDown(KeyCode.Space))
+            {
+                car.EnterCar(gameObject);
+            }
+        }
+    }
 }
