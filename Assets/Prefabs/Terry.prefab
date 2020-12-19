@@ -245,6 +245,7 @@ GameObject:
   - component: {fileID: -8894718471685603450}
   - component: {fileID: -1864274545932577929}
   - component: {fileID: -7371296134097647653}
+  - component: {fileID: -3355224784926961980}
   m_Layer: 0
   m_Name: Terry
   m_TagString: Untagged
@@ -336,6 +337,24 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 57.68, y: 179.47, z: 40.85}
   m_Center: {x: 0, y: 95, z: 0}
+--- !u!205 &-3355224784926961980
+LODGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1090507717376531458}
+  serializedVersion: 2
+  m_LocalReferencePoint: {x: 0, y: 0, z: 0}
+  m_Size: 1
+  m_FadeMode: 0
+  m_AnimateCrossFading: 1
+  m_LastLODIsBillboard: 0
+  m_LODs:
+  - screenRelativeHeight: 0.6
+    fadeTransitionWidth: 0
+    renderers: []
+  m_Enabled: 1
 --- !u!1 &1119416676389475797
 GameObject:
   m_ObjectHideFlags: 0

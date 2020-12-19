@@ -22,7 +22,7 @@ public class Gun : MonoBehaviour
 
     private IEnumerator KillPedestrian(Pedestrian pedestrian, Vector3 origin)
     {
-        yield return new WaitForSeconds(0.25f);
+        yield return new WaitForSeconds(0.2f);
 
         pedestrian.Die(transform.forward, origin);
     }

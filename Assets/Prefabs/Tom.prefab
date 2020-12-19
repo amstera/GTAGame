@@ -870,6 +870,7 @@ GameObject:
   - component: {fileID: 1555189363033032778}
   - component: {fileID: 7368602467517117927}
   - component: {fileID: 3097981325009376646}
+  - component: {fileID: 6299716415226749764}
   m_Layer: 0
   m_Name: Tom
   m_TagString: Untagged
@@ -945,6 +946,30 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Blood: {fileID: 7473664728834595500, guid: 49859b072161d4f9c904431ff0d7516b, type: 3}
   IsWalking: 0
+--- !u!205 &6299716415226749764
+LODGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1825169157456766095}
+  serializedVersion: 2
+  m_LocalReferencePoint: {x: 0, y: 0, z: 0}
+  m_Size: 1
+  m_FadeMode: 1
+  m_AnimateCrossFading: 1
+  m_LastLODIsBillboard: 0
+  m_LODs:
+  - screenRelativeHeight: 0.6
+    fadeTransitionWidth: 0
+    renderers: []
+  - screenRelativeHeight: 0.3
+    fadeTransitionWidth: 0
+    renderers: []
+  - screenRelativeHeight: 0.1
+    fadeTransitionWidth: 0
+    renderers: []
+  m_Enabled: 1
 --- !u!1 &1873208107231784280
 GameObject:
   m_ObjectHideFlags: 0

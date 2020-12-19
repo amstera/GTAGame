@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System.Collections;
+using UnityEngine;
 using UnityEngine.AI;
 
 public class Pedestrian : MonoBehaviour
@@ -25,10 +26,23 @@ public class Pedestrian : MonoBehaviour
         }
     }
 
+    private void Update()
+    {
+        if (_isDead)
+        {
+            return;
+        }
+
+        if (IsWalking && _navMeshAgent.remainingDistance < 0.1f)
+        {
+            _navMeshAgent.destination = Vector3.Distance(_navMeshAgent.destination, _startPosition) < 1f ? _startPosition - (Vector3.forward * 25) : _startPosition;
+        }
+    }
+
     public void Die(Vector3 bulletDirection, Vector3 bloodOrigin)
     {
-        GameObject bloodSplatter = Instantiate(Blood, bloodOrigin, Quaternion.identity);
-        Destroy(bloodSplatter, 5);
+        GameObject bloodParticle = Instantiate(Blood, bloodOrigin, Quaternion.identity);
+        Destroy(bloodParticle, 5);
 
         if (_isDead)
         {
@@ -47,22 +61,9 @@ public class Pedestrian : MonoBehaviour
         foreach (Rigidbody rb in GetComponentsInChildren<Rigidbody>())
         {
             rb.isKinematic = false;
-            rb.AddForce(bulletDirection * 5, ForceMode.Impulse);
+            rb.AddForce(bulletDirection * 10, ForceMode.Impulse);
         }
 
         Destroy(gameObject, 10);
-    }
-
-    private void Update()
-    {
-        if (_isDead)
-        {
-            return;
-        }
-
-        if (IsWalking && _navMeshAgent.remainingDistance < 0.1f)
-        {
-            _navMeshAgent.destination = Vector3.Distance(_navMeshAgent.destination, _startPosition) < 1f ? _startPosition - (Vector3.forward * 25) : _startPosition;
-        }
     }
 }
