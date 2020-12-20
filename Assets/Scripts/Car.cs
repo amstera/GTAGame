@@ -1,17 +1,31 @@
 ﻿using UnityEngine;
+using UnityEngine.AI;
 
 public class Car : MonoBehaviour
 {
+    public GameObject Explosion;
     public CarOccupied Occupied;
+    public Vector3 TargetPosition;
     public float Speed = 8;
+
     private GameObject _player;
     private GameObject _crosshair;
     private float _timeEnteredCar;
     private float _acceleration;
+    private NavMeshAgent _navMeshAgent;
+    private Vector3 _startPosition;
+    private int _health = 100;
 
     void Start()
     {
         _crosshair = GameObject.FindGameObjectWithTag("Crosshair");
+
+        if (Occupied == CarOccupied.Comp)
+        {
+            _navMeshAgent = GetComponent<NavMeshAgent>();
+            _startPosition = transform.position;
+            _navMeshAgent.destination = TargetPosition;
+        }
     }
 
     void Update()
@@ -53,9 +67,16 @@ public class Car : MonoBehaviour
                 _acceleration = Mathf.Clamp(_acceleration -= Time.deltaTime/2, 0, 1);
             }
         }
+        else if (Occupied == CarOccupied.Comp)
+        {
+            if (_navMeshAgent.remainingDistance < 0.1f)
+            {
+                _navMeshAgent.destination = Vector3.Distance(_navMeshAgent.destination, _startPosition) < 1f ? TargetPosition : _startPosition;
+            }
+        }
     }
 
-    private void OnCollisionEnter(Collision collision)
+    void OnCollisionEnter(Collision collision)
     {
         Pedestrian pedestrian = collision.collider.GetComponent<Pedestrian>();
         if (pedestrian != null && collision.relativeVelocity.magnitude > 0f)
@@ -68,6 +89,12 @@ public class Car : MonoBehaviour
     {
         if (Occupied != CarOccupied.User)
         {
+            if (Occupied == CarOccupied.Comp)
+            {
+                _navMeshAgent.enabled = false;
+                //add person running out
+            }
+
             player.SetActive(false);
             _crosshair.SetActive(false);
             _player = player;
@@ -87,6 +114,17 @@ public class Car : MonoBehaviour
             _player = null;
             Occupied = CarOccupied.None;
             transform.Find("Camera").gameObject.SetActive(false);
+        }
+    }
+
+    public void TakeDamage(int amount)
+    {
+        _health -= amount;
+        if (_health <= 0)
+        {
+            GameObject explosionEffect = Instantiate(Explosion, transform.position, Quaternion.identity);
+            Destroy(explosionEffect, 5);
+            Destroy(gameObject);
         }
     }
 }

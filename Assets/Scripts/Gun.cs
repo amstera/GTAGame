@@ -16,14 +16,29 @@ public class Gun : MonoBehaviour
                 {
                     StartCoroutine(KillPedestrian(pedestrian, hit.point));
                 }
+                else
+                {
+                    Car car = hit.collider.GetComponent<Car>();
+                    if (car != null)
+                    {
+                        StartCoroutine(ShootCar(car));
+                    }
+                }
             }
         }
     }
 
     private IEnumerator KillPedestrian(Pedestrian pedestrian, Vector3 origin)
     {
-        yield return new WaitForSeconds(0.2f);
+        yield return new WaitForSeconds(0.15f);
 
         pedestrian.Die(transform.forward, origin);
+    }
+
+    private IEnumerator ShootCar(Car car)
+    {
+        yield return new WaitForSeconds(0.15f);
+
+        car.TakeDamage(35);
     }
 }
