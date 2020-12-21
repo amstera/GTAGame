@@ -4,6 +4,7 @@ using UnityEngine.AI;
 public class Car : MonoBehaviour
 {
     public GameObject Explosion;
+    public GameObject ThrownPerson;
     public CarOccupied Occupied;
     public Vector3 TargetPosition;
     public float Speed = 8;
@@ -91,8 +92,14 @@ public class Car : MonoBehaviour
         {
             if (Occupied == CarOccupied.Comp)
             {
+                GameManager.Instance.AddWantedLevel();
                 _navMeshAgent.enabled = false;
-                //add person running out
+                GameObject person = Instantiate(ThrownPerson, transform.position - (transform.right * 1.5f), Quaternion.identity);
+                foreach (Rigidbody rb in person.GetComponentsInChildren<Rigidbody>())
+                {
+                    rb.AddForce(-transform.right * 5, ForceMode.Impulse);
+                }
+                Destroy(person, 10);
             }
 
             player.SetActive(false);
@@ -122,9 +129,18 @@ public class Car : MonoBehaviour
         _health -= amount;
         if (_health <= 0)
         {
+            if (Occupied == CarOccupied.Comp)
+            {
+                GameManager.Instance.AddMoney(500);
+            }
+            GameManager.Instance.AddWantedLevel();
             GameObject explosionEffect = Instantiate(Explosion, transform.position, Quaternion.identity);
             Destroy(explosionEffect, 5);
             Destroy(gameObject);
+        }
+        else if (_health <= 65)
+        {
+            transform.Find("Smoke").gameObject.SetActive(true);
         }
     }
 }

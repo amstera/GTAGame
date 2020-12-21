@@ -51,6 +51,9 @@ public class Pedestrian : MonoBehaviour
             return;
         }
 
+        GameManager.Instance.AddWantedLevel();
+        GameManager.Instance.AddMoney(500);
+
         _isDead = true;
         GetComponent<BoxCollider>().enabled = false;
         GetComponent<Animator>().enabled = false;
