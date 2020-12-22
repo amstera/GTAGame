@@ -8,6 +8,12 @@ public class Car : MonoBehaviour
     public CarOccupied Occupied;
     public Vector3 TargetPosition;
     public float Speed = 8;
+    public AudioSource Door;
+    public AudioSource Driving;
+    public AudioSource CarHit;
+    public AudioSource Burning;
+    public AudioSource ExplosionSound;
+    public AudioSource MetalBang;
 
     private GameObject _player;
     private GameObject _crosshair;
@@ -26,6 +32,7 @@ public class Car : MonoBehaviour
             _navMeshAgent = GetComponent<NavMeshAgent>();
             _startPosition = transform.position;
             _navMeshAgent.destination = TargetPosition;
+            Driving.Play();
         }
     }
 
@@ -54,6 +61,10 @@ public class Car : MonoBehaviour
             {
                 _acceleration = Mathf.Clamp(_acceleration += Time.deltaTime / 2, 0, 1);
 
+                if (!Driving.isPlaying)
+                {
+                    Driving.Play();
+                }
                 if (Input.GetKey(KeyCode.A))
                 {
                     transform.RotateAround(transform.position, transform.up, Time.deltaTime * -125f);
@@ -65,6 +76,7 @@ public class Car : MonoBehaviour
             }
             else
             {
+                Driving.Stop();
                 _acceleration = Mathf.Clamp(_acceleration -= Time.deltaTime/2, 0, 1);
             }
         }
@@ -84,12 +96,19 @@ public class Car : MonoBehaviour
         {
             pedestrian.Die(transform.forward, null);
         }
+        Car car = collision.collider.GetComponent<Car>();
+        if (car != null && collision.relativeVelocity.magnitude > 0f)
+        {
+            MetalBang.Play();
+        }
     }
 
     public void EnterCar(GameObject player)
     {
+        Driving.Stop();
         if (Occupied != CarOccupied.User)
         {
+            Door.Play();
             if (Occupied == CarOccupied.Comp)
             {
                 GameManager.Instance.AddWantedLevel();
@@ -113,6 +132,7 @@ public class Car : MonoBehaviour
 
     public void LeaveCar()
     {
+        Door.Play();
         if (Occupied == CarOccupied.User)
         {
             _player.SetActive(true);
@@ -127,19 +147,34 @@ public class Car : MonoBehaviour
     public void TakeDamage(int amount)
     {
         _health -= amount;
+        CarHit.Play();
         if (_health <= 0)
         {
+            ExplosionSound.Play();
             if (Occupied == CarOccupied.Comp)
             {
                 GameManager.Instance.AddMoney(500);
             }
             GameManager.Instance.AddWantedLevel();
             GameObject explosionEffect = Instantiate(Explosion, transform.position, Quaternion.identity);
-            Destroy(explosionEffect, 5);
-            Destroy(gameObject);
+            Destroy(explosionEffect, 2);
+            if (Occupied == CarOccupied.User)
+            {
+                _player.GetComponent<Player>().Hit(60);
+                LeaveCar();
+            }
+            foreach (Renderer rendererComponent in GetComponentsInChildren<Renderer>())
+            {
+                rendererComponent.enabled = false;
+            }
+            Destroy(gameObject, 5);
         }
         else if (_health <= 65)
         {
+            if (!Burning.isPlaying)
+            {
+                Burning.Play();
+            }
             transform.Find("Smoke").gameObject.SetActive(true);
         }
     }

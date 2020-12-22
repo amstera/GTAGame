@@ -3,10 +3,13 @@ using UnityEngine;
 
 public class Gun : MonoBehaviour
 {
+    public AudioSource GunShot;
+
     void Update()
     {
         if (Input.GetMouseButtonDown(0))
         {
+            GunShot.Play();
             RaycastHit hit;
             Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
             if (Physics.Raycast(ray, out hit, Mathf.Infinity))

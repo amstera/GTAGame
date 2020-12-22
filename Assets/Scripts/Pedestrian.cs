@@ -5,10 +5,11 @@ public class Pedestrian : MonoBehaviour
 {
     public GameObject Blood;
     public bool IsWalking;
+    public bool IsDead;
+    public AudioSource Hit;
 
     private Vector3 _startPosition;
     private NavMeshAgent _navMeshAgent;
-    private bool _isDead;
 
     void Start()
     {
@@ -27,7 +28,7 @@ public class Pedestrian : MonoBehaviour
 
     private void Update()
     {
-        if (_isDead)
+        if (IsDead)
         {
             return;
         }
@@ -46,15 +47,17 @@ public class Pedestrian : MonoBehaviour
             Destroy(bloodParticle, 5);
         }
 
-        if (_isDead)
+        if (IsDead)
         {
             return;
         }
 
+        Hit.Play();
+
         GameManager.Instance.AddWantedLevel();
         GameManager.Instance.AddMoney(500);
 
-        _isDead = true;
+        IsDead = true;
         GetComponent<BoxCollider>().enabled = false;
         GetComponent<Animator>().enabled = false;
 

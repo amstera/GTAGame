@@ -1,5 +1,4 @@
 ﻿using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 [AddComponentMenu("Nokobot/Modern Guns/Simple Shoot")]
@@ -9,6 +8,7 @@ public class SimpleShoot : MonoBehaviour
     public GameObject bulletPrefab;
     public GameObject casingPrefab;
     public GameObject muzzleFlashPrefab;
+    public float Frequency;
 
     [Header("Location Refrences")]
     [SerializeField] private Animator gunAnimator;
@@ -28,12 +28,18 @@ public class SimpleShoot : MonoBehaviour
 
         if (gunAnimator == null)
             gunAnimator = GetComponentInChildren<Animator>();
+
+        if (Frequency > 0)
+        {
+            gunAnimator.SetTrigger("Fire");
+            StartCoroutine(FireGun());
+        }
     }
 
     void Update()
     {
         //If you want a different input, change it here
-        if (Input.GetButtonDown("Fire1"))
+        if (Frequency <= 0 && Input.GetButtonDown("Fire1"))
         {
             //Calls animation on the gun that has the relevant animation events that will fire
             gunAnimator.SetTrigger("Fire");
@@ -82,4 +88,11 @@ public class SimpleShoot : MonoBehaviour
         Destroy(tempCasing, destroyTimer);
     }
 
+    private IEnumerator FireGun()
+    {
+        yield return new WaitForSeconds(Frequency);
+
+        gunAnimator.SetTrigger("Fire");
+        StartCoroutine(FireGun());
+    }
 }
