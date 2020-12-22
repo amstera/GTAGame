@@ -160,7 +160,8 @@ public class Car : MonoBehaviour
             Destroy(explosionEffect, 2);
             if (Occupied == CarOccupied.User)
             {
-                _player.GetComponent<Player>().Hit(60);
+                Player player = _player.GetComponent<Player>();
+                player.Hit(40);
                 LeaveCar();
             }
             foreach (Renderer rendererComponent in GetComponentsInChildren<Renderer>())

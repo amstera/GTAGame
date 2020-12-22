@@ -59,7 +59,7 @@ public class GameManager : MonoBehaviour
                 {
                     if (_lastPoliceSpawnTime == 0 || (Time.time - _lastPoliceSpawnTime) >= 5)
                     {
-                        Instantiate(Police, new Vector3((Camera.main.transform.position - Camera.main.transform.forward * Random.Range(2f, 5f)).x, 0, (Camera.main.transform.position - Camera.main.transform.right * Random.Range(3f, 10f)).z), Quaternion.identity);
+                        Instantiate(Police, new Vector3((Camera.main.transform.position - Camera.main.transform.forward * Random.Range(2f, 5f)).x, 0, (Camera.main.transform.position - Camera.main.transform.right * Random.Range(5f, 15f)).z), Quaternion.identity);
                         _lastPoliceSpawnTime = Time.time;
                     }
                 }

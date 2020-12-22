@@ -14,14 +14,14 @@ public class Gun : MonoBehaviour
             Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
             if (Physics.Raycast(ray, out hit, Mathf.Infinity))
             {
-                Pedestrian pedestrian = hit.collider.GetComponent<Pedestrian>();
+                Pedestrian pedestrian = hit.collider.GetComponentInParent<Pedestrian>();
                 if (pedestrian != null)
                 {
                     StartCoroutine(KillPedestrian(pedestrian, hit.point));
                 }
                 else
                 {
-                    Car car = hit.collider.GetComponent<Car>();
+                    Car car = hit.collider.GetComponentInParent<Car>();
                     if (car != null)
                     {
                         StartCoroutine(ShootCar(car));

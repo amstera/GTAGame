@@ -40,14 +40,14 @@ public class Police : Pedestrian
         RaycastHit hit;
         if (Physics.Raycast(Gun.transform.position + Vector3.down, Gun.transform.forward, out hit))
         {
-            Player player = hit.collider.GetComponent<Player>();
+            Player player = hit.collider.GetComponentInParent<Player>();
             if (player != null)
             {
                 player.Hit();
             }
             else
             {
-                Car car = hit.collider.GetComponent<Car>();
+                Car car = hit.collider.GetComponentInParent<Car>();
                 if (car != null && car.Occupied == CarOccupied.User)
                 {
                     car.TakeDamage(35);

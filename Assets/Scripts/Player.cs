@@ -57,10 +57,15 @@ public class Player : MonoBehaviour
             Walking.Stop();
         }
 
-        _health = Mathf.Clamp(_health + Time.deltaTime, 0, 100);
+        _health = Mathf.Clamp(_health + Time.deltaTime * 2, 0, 100);
         Color color = Blood.color;
         color.a = (100 - _health) / 100;
         Blood.color = color;
+
+        if (transform.position.y < -5)
+        {
+            EndLevel();
+        }
     }
 
     void OnCollisionStay(Collision collision)
@@ -92,15 +97,7 @@ public class Player : MonoBehaviour
 
         if (_health <= 0)
         {
-            _isDead = true;
-
-            Color color = Blood.color;
-            color.a = 1;
-            Blood.color = color;
-
-            WastedText.SetActive(true);
-            Wasted.Play();
-            StartCoroutine(ResetLevel());
+            EndLevel();
         }
     }
 
@@ -109,5 +106,18 @@ public class Player : MonoBehaviour
         yield return new WaitForSeconds(2);
 
         SceneManager.LoadScene(0);
+    }
+
+    private void EndLevel()
+    {
+        _isDead = true;
+
+        Color color = Blood.color;
+        color.a = 1;
+        Blood.color = color;
+
+        WastedText.SetActive(true);
+        Wasted.Play();
+        StartCoroutine(ResetLevel());
     }
 }
